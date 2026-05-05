@@ -1,4 +1,3 @@
-import os
 from PIL import Image
 
 from src import config
@@ -6,33 +5,30 @@ from src.models.inference import load_pipeline
 
 
 def main():
-    # load pipeline
     pipe = load_pipeline("sd_condition_controlnet")
 
-    # pick one sample image
-    image_files = list(config.IMAGES_512_DIR.glob("*.jpg"))
+    image_files = sorted(config.IMAGES_512_DIR.glob("*.jpg")) + sorted(config.IMAGES_512_DIR.glob("*.JPG"))
+
     if not image_files:
-        raise RuntimeError("No images found in dataset")
+        raise RuntimeError(f"No images found in {config.IMAGES_512_DIR}")
 
-    img = Image.open(image_files[0])
-
-    # example condition
-    location = "a Penn campus building"
-    time_of_day = "night"
-    weather = "clear"
+    source = Image.open(image_files[0]).convert("RGB")
 
     result = pipe.generate(
-        source=img,
-        location=location,
-        time_of_day=time_of_day,
-        weather=weather,
+        source=source,
+        location="a Penn campus building",
+        time_of_day="night",
+        weather="clear",
         seed=42,
     )
 
-    os.makedirs("outputs", exist_ok=True)
-    result.image.save("outputs/controlnet_result.png")
+    out_dir = config.OUTPUTS_DIR / "demo"
+    out_dir.mkdir(parents=True, exist_ok=True)
 
-    print("Saved result to outputs/controlnet_result.png")
+    output_path = out_dir / "controlnet_demo.png"
+    result.image.save(output_path)
+
+    print(f"Saved ControlNet demo output to: {output_path}")
 
 
 if __name__ == "__main__":
