@@ -164,6 +164,7 @@ SEG_SCALE      = 0.70         # Segmentation ControlNet conditioning weight
 
 The training pipeline lives in `Model Training Books/Training Books/Model_Training_rev.ipynb`. It expects the dataset structure described in `BoundaryMetadata.xlsx` (not committed — provided separately to graders) and a Colab Pro / A100 runtime due to the long training time. The README focuses on inference; training reproduction is documented inside that notebook.
 
+The standalone train contains the training file for segmentation map and canny maps (This was the best that we use for the inference)
 ---
 
 ## Models Used
@@ -192,9 +193,3 @@ Total first-run download: **~7 GB** (cached afterwards in `~/.cache/huggingface/
 | Prompt input is unresponsive | The `input()` text box appears at the bottom of the cell — scroll down and press Enter after typing |
 
 ---
-
-## Citation
-
-If you use this work, please cite:
-
-> Singh V., et al. *LoRA + Dual ControlNet for Scene Lighting and Weather Transfer*. CIS 5190, University of Pennsylvania, 2026.
